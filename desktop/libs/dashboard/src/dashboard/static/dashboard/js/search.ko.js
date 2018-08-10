@@ -1847,6 +1847,7 @@ var Collection = function (vm, collection) {
 
   self.name.subscribe(function(newValue) { // New Dashboard
     if (newValue && (self.engine() == 'solr' || /^[^\.]+\.[^\.]+$/.test(newValue))) {
+      huePubSub.publish('dashboard.switched.collection');
       self.label(newValue);
       self.switchCollection();
       vm.search();
