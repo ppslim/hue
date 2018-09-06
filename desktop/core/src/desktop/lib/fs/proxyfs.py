@@ -74,6 +74,10 @@ class ProxyFS(object):
       else:
         raise IOError("Missing permissions for %s on %s" % (self.user, path))
     except KeyError:
+      # Documented issues 1
+      # Note: Defined schemas. HDFS by default, others only if plugins enabled
+      # Causes error when adding DB with location prefix with unsupported schema
+      # ERROR: Unknown scheme fusion, available schemes: ['hdfs']
       raise IOError('Unknown scheme %s, available schemes: %s' % (scheme, self._fs_dict.keys()))
 
   def _get_fs_pair(self, src, dst):

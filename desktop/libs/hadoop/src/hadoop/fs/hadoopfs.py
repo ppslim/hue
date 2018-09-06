@@ -207,11 +207,19 @@ class Hdfs(object):
     Take an HDFS path (hdfs://nn:port/foo) or just (/foo) and split it into
     the standard urlsplit's 5-tuple.
     """
+    # Documented issues 3
+    # Location link in Hive table browser, does not take you to the file browser
+    # This code only supports URIs with '://'
+    # This aborts with our custom URI
     i = url.find('://')
     if i == -1:
       # Not found. Treat the entire argument as an HDFS path
       return ('hdfs', '', normpath(url), '', '')
     schema = url[:i]
+    # Documented issues 3
+    # Location link in Hive table browser, does not take you to the file browser
+    # This code is hard coded to support hdfs and viewfs only
+    # This line results in our URI being parsed with a authority / netloc that is empty
     if schema not in ('hdfs', 'viewfs'):
       # Default to standard for non-hdfs
       return urlparse.urlsplit(url)

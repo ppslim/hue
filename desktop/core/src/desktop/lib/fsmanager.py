@@ -32,6 +32,10 @@ FS_CACHE = {}
 
 DEFAULT_SCHEMA = 'hdfs'
 
+# Documented issues 1
+# Note: Defined schemas. HDFS by default, others only if plugins enabled
+# Causes error when adding DB with location prefix with unsupported schema
+# ERROR: Unknown scheme fusion, available schemes: ['hdfs']
 FS_GETTERS = {
   "hdfs": cluster.get_hdfs,
   "s3a": aws.get_s3fs if is_s3_enabled() else None,

@@ -1375,7 +1375,14 @@ def location_to_url(location, strict=True):
     """
     if location is None:
       return None
+    # Documented issues 3
+    # Call urllsplit. See notes in hadoop.fs.hadoopfs.Hdfs#urlsplit
     split_path = Hdfs.urlsplit(location)
+    # Documented issues 3
+    # Location link in Hive table browser, does not take you to the file browser
+    # This code strictly requires index 1 & 2 to have a value
+    # Index 1 is notloc / authority, Index 2 is path
+    # Path is present, but netloc is empty for our URI, thus returns None
     if strict and not split_path[1] or not split_path[2]:
       # No netloc not full url or no URL
       return None
